@@ -7,6 +7,7 @@ import pandas as pd
 dash.register_page(__name__)
 df = pd.read_pickle(r"openings_df.pkl")
 labels = df['m1'].unique().to_list() + df['m2'].unique().to_list()
+print(sum(df.memory_usage()) /1000 / 1000)
 labels.append("NoneNone")
 elo_mean_min_max = [800, 2700]
 game_len_min_max = [10, 220]
@@ -109,11 +110,11 @@ layout = html.Div(
 def update_graph(min_per, mean_elo, g_type, g_mode, g_results, game_len, elo_diff, elo_adv):
     these = df
     if mean_elo != elo_mean_min_max:
-        these = these[(mean_elo[0] < these["elo_mean"]) & (these["elo_mean"] < mean_elo[1])]
+        these = these[((these["WElo"]+these["BElo"])/2).between(mean_elo[0], mean_elo[1])]
     if game_len != game_len_min_max:
-        these = these[(game_len[0] < these["num_of_moves"]) & (these["num_of_moves"] < game_len[1])]
+        these = these[these["num_of_moves"].between(game_len[0], game_len[1])]
     if elo_diff != elo_dif_min_max:
-        these = these[(elo_diff[0] < these["elo_diff"]) & (these["elo_diff"] < elo_diff[1])]
+        these = these[abs(these["WElo"] - these["BElo"]).between(elo_diff[0], elo_diff[1])]
 
     match elo_adv:
         case "White":
