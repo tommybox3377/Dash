@@ -2,7 +2,8 @@ from dash import Dash, html, dcc
 import dash
 from flask import Flask
 
-app = Dash(__name__, use_pages=True, server=Flask(__name__))
+server = Flask(__name__)
+app = Dash(__name__, use_pages=True, server=server)
 
 page_names = {
     "Home": "Home",
