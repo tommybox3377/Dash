@@ -17,7 +17,7 @@ tot_count = len(df)
 layout = html.Div(
     style={
         'margin': 0,
-        'padding': 0,
+        'padding': 20,
     },
     children=[
         html.H1(children=["", html.Div(id="title", style={'text-align': 'center'})]),

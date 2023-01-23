@@ -1,14 +1,13 @@
 from dash import Dash, html, dcc
 import dash
-from flask import Flask
 
-server = Flask(__name__)
-app = Dash(__name__, use_pages=True, server=server)
+app = Dash(__name__, use_pages=True)
+server = app.server
 
 page_names = {
     "Home": "Home",
     "Openings": "Chess Openings Analysis",
-    "Numbero": "Numbero",
+    # "Numbero": "Numbero",
 }
 
 app.layout = html.Div([
@@ -21,7 +20,7 @@ app.layout = html.Div([
                     f"{page_names[page['name']]}", href=page["relative_path"]
                 )
             )
-            for page in dash.page_registry.values()
+            for page in dash.page_registry.values() if page['name'] in page_names.keys()
         ]
     ),
 
