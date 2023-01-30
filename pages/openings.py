@@ -20,6 +20,7 @@ layout = html.Div(
         'padding': 20,
     },
     children=[
+        html.P("Once I started playing Chess regularly, I immediately started to think how to tie Data into it. Since an early step in almost any Data Science project is Exploratory Data Analysis, I thought that it would be interesting to see what are the common first 2 moves of chess games, both with White’s opening and how Black responds. It is also interesting to see how this changes based on a number factors ranging from the players' Elo, to the type of game played. Play around with the filters to see how the openings change!"),
         html.H1(children=["", html.Div(id="title", style={'text-align': 'center'})]),
 
         html.Div([

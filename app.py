@@ -7,11 +7,15 @@ server = app.server
 page_names = {
     "Home": "Home",
     "Openings": "Chess Openings Analysis",
-    # "Numbero": "Numbero",
+    "Qrg": "Python Quick Reference Guides",
+    "Overlaps": "Reddit Common Interest Comparison",
 }
 
 app.layout = html.Div([
     html.H1('twmaryniak.com', style={'text-align': 'center'}),
+    html.Div([
+        html.A("LinkedIn", href="https://www.linkedin.com/in/tom-maryniak-70556b191")
+    ], style={'width': '100%', "display": "flex", 'justifyContent': 'center'}),
 
     html.Div(
         [
