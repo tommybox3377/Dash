@@ -19,7 +19,7 @@ layout = html.Div(
         'padding': 20,
     },
     children=[
-        html.P("I enjoy the idea that most people have a wide range of hobbies and interests. So, by scrapping reddit I am able compare some of the most popular subreddits to others based on interactions. The chart below shows the percentage of overlap in users that have commented on any given subreddit with other subreddits they have also commented it on. *Note that this data is just taken from the top posts in that past year (scaped Jan. 2023) so the data is incomplete as well as subject to change over time."),
+        html.P("I enjoy the idea that most people have a wide range of hobbies and interests. So, by scrapping reddit I am able compare some of the most popular subreddits to others based on interactions. The chart below shows the percentage of overlap in users that have commented on any given subreddit with other subreddits they have also commented it on. *Note that this data is just taken from the top posts in that past year (scraped Jan. 2023) so the data is incomplete as well as subject to change over time."),
         html.Div([
             dcc.Dropdown(
                 options=base_options,
@@ -57,7 +57,7 @@ def update_graph(base):
     y = list(scores.values())[:this_many]
     fig = px.bar(x=x, y=y)
     fig.update_layout(
-        xaxis_title="subreddit", yaxis_title="Percentage of Overlap",
+        xaxis_title="subreddit", yaxis_title="Percentage of Overlap, %",
         title=f"Interest in r/{base} compared to other subreddits",
         paper_bgcolor='rgba(200,200, 200,50)',
         plot_bgcolor='rgba(200,200, 200,50)',
