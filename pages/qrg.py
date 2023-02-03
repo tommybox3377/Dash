@@ -77,9 +77,10 @@ if __name__ == '__main__':
 }
 
 layout = html.Div(
-    style={
-        'margin': 0,
-        'padding': 20,
+    style= {
+        "margin-left": "18rem",
+        "margin-right": "2rem",
+        "padding": "2rem 1rem",
     },
     children=[
         html.Br(),
@@ -94,7 +95,6 @@ layout = html.Div(
             html.Button(x, id=x, n_clicks=0) for x, v in tips.items() if v[0] == "how_to"
         ]),
         html.Br(),
-        # html.Div(id='tip', style={'width': '100%', 'height': 500, 'whiteSpace': 'pre-line'}),
         dcc.Textarea(id='tip', value="", style={'width': '100%', 'height': 300}, spellCheck=False),
     ])
 

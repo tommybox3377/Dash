@@ -1,7 +1,8 @@
-from dash import Dash, html, dcc
 import dash
+import dash_bootstrap_components as dbc
+from dash import dcc, html
 
-app = Dash(__name__, use_pages=True)
+app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 page_names = {
@@ -9,27 +10,35 @@ page_names = {
     "Openings": "Chess Openings Analysis",
     "Qrg": "Python Quick Reference Guides",
     "Overlaps": "Reddit Common Interest Comparison",
+    "Contactme": "Contact Me",
 }
 
-app.layout = html.Div([
-    html.H1('twmaryniak.com', style={'text-align': 'center'}),
-    html.Div([
-        html.A("LinkedIn", href="https://www.linkedin.com/in/tom-maryniak-70556b191")
-    ], style={'width': '100%', "display": "flex", 'justifyContent': 'center'}),
+sidebar = html.Div(
+    [
+        html.H4("twmaryniak.com"),
+        html.Br(),
+        dbc.Nav(
+            [
+                dbc.NavLink(
+                    f"{page_names[page['name']]}", href=page["relative_path"], active="exact"
+                ) for page in dash.page_registry.values() if page['name'] in page_names.keys()
+            ],
+            vertical=True,
+            pills=True,
+        ),
+    ],
+    style={
+        "position": "fixed",
+        "top": 0,
+        "left": 0,
+        "bottom": 0,
+        "width": "16rem",
+        "padding": "2rem 1rem",
+        "background-color": "#c0c0c0",
+    },
+)
 
-    html.Div(
-        [
-            html.Div(
-                dcc.Link(
-                    f"{page_names[page['name']]}", href=page["relative_path"]
-                )
-            )
-            for page in dash.page_registry.values() if page['name'] in page_names.keys()
-        ]
-    ),
-
-    dash.page_container
-])
+app.layout = html.Div([dcc.Location(id="url"), sidebar, dash.page_container])
 
 if __name__ == '__main__':
     app.run_server(debug=False, host='0.0.0.0')

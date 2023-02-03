@@ -7,7 +7,7 @@ import pandas as pd
 dash.register_page(__name__)
 df = pd.read_pickle(r"openings_df.pkl")
 labels = df['m1'].unique().to_list() + df['m2'].unique().to_list()
-print(sum(df.memory_usage()) /1000 / 1000)
+print(sum(df.memory_usage()) / 1000 / 1000)
 labels.append("NoneNone")
 elo_mean_min_max = [800, 2700]
 game_len_min_max = [10, 220]
@@ -16,11 +16,13 @@ tot_count = len(df)
 
 layout = html.Div(
     style={
-        'margin': 0,
-        'padding': 20,
+        "margin-left": "18rem",
+        "margin-right": "2rem",
+        "padding": "2rem 1rem",
     },
     children=[
-        html.P("Once I started playing Chess regularly, I immediately started to think how to tie Data into it. Since an early step in almost any Data Science project is Exploratory Data Analysis, I thought that it would be interesting to see what are the common first 2 moves of chess games, both with White’s opening and how Black responds. It is also interesting to see how this changes based on a number factors ranging from the players' Elo, to the type of game played. Play around with the filters to see how the openings change!"),
+        html.P(
+            "Once I started playing Chess regularly, I immediately started to think how to tie Data into it. Since an early step in almost any Data Science project is Exploratory Data Analysis, I thought that it would be interesting to see what are the common first 2 moves of chess games, both with White’s opening and how Black responds. It is also interesting to see how this changes based on a number factors ranging from the players' Elo, to the type of game played. Play around with the filters to see how the openings change!"),
         html.H1(children=["", html.Div(id="title", style={'text-align': 'center'})]),
 
         html.Div([
@@ -34,17 +36,17 @@ layout = html.Div(
                     html.H3("Elo Mean", style={'text-align': 'center'}),
                     dcc.RangeSlider(
                         min=900, max=2700, step=25, value=[800, 2700],
-                        marks={int(i): f'{int(i)}' for i in np.arange(900, 2701, 300)}, id="slct_elo"
+                        marks={int(i): f'{int(i)}' for i in np.arange(900, 2701, 600)}, id="slct_elo"
                     ),
                     html.H3("Game Length", style={'text-align': 'center'}),
                     dcc.RangeSlider(
-                        min=10, max=220, step=5, value=[10, 220],
-                        marks={int(i): f'{int(i)}' for i in np.arange(10, 221, 30)}, id="game_len"
+                        min=10, max=210, step=5, value=[10, 220],
+                        marks={int(i): f'{int(i)}' for i in np.arange(10, 211, 50)}, id="game_len"
                     ),
                     html.H3("Difference in Elo", style={'text-align': 'center'}),
                     dcc.RangeSlider(
                         min=0, max=1000, step=25, value=[0, 1000],
-                        marks={int(i): f'{int(i)}' for i in np.arange(0, 1001, 100)}, id="elo_diff"
+                        marks={int(i): f'{int(i)}' for i in np.arange(0, 1001, 200)}, id="elo_diff"
                     ),
                     html.H3("Higher Elo", style={'text-align': 'center'}),
                     html.Div([
@@ -56,7 +58,7 @@ layout = html.Div(
                     html.Div([
                         dcc.Checklist(
                             ['Classical', 'Bullet', 'Blitz'],
-                            ['Classical', 'Bullet', 'Blitz'], inline=False, id="g_type"
+                            ['Classical', 'Bullet', 'Blitz'], inline=True, id="g_type"
                         )
                     ], style={'width': '100%', 'display': 'flex', 'align-items': 'center',
                               'justify-content': 'center'}),
@@ -64,7 +66,7 @@ layout = html.Div(
                     html.Div([
                         dcc.Checklist(
                             ['Game', 'Tournament'],
-                            ['Game', 'Tournament'], inline=False, id="g_mode"
+                            ['Game', 'Tournament'], inline=True, id="g_mode"
                         )
                     ], style={'width': '100%', 'display': 'flex', 'align-items': 'center',
                               'justify-content': 'center'}),
@@ -72,7 +74,7 @@ layout = html.Div(
                     html.Div([
                         dcc.Checklist(
                             ['Black', 'Tie', 'White'],
-                            ['Black', 'Tie', 'White'], inline=False, id="g_results"
+                            ['Black', 'Tie', 'White'], inline=True, id="g_results"
                         )
                     ], style={'width': '100%', 'display': 'flex', 'align-items': 'center',
                               'justify-content': 'center'}),
@@ -111,7 +113,7 @@ layout = html.Div(
 def update_graph(min_per, mean_elo, g_type, g_mode, g_results, game_len, elo_diff, elo_adv):
     these = df
     if mean_elo != elo_mean_min_max:
-        these = these[((these["WElo"]+these["BElo"])/2).between(mean_elo[0], mean_elo[1])]
+        these = these[((these["WElo"] + these["BElo"]) / 2).between(mean_elo[0], mean_elo[1])]
     if game_len != game_len_min_max:
         these = these[these["num_of_moves"].between(game_len[0], game_len[1])]
     if elo_diff != elo_dif_min_max:
@@ -142,7 +144,7 @@ def update_graph(min_per, mean_elo, g_type, g_mode, g_results, game_len, elo_dif
     for move1 in these['m1'].unique():
         these_m = these[these["m1"] == move1]
         for move2, count in these_m["m2"].value_counts().items():
-            if (count/game_count) >= min_per:
+            if (count / game_count) >= min_per:
                 froms.append(labels.index(move1))
                 tos.append(labels.index(move2))
                 values.append(count)
