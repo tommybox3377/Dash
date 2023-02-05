@@ -3,8 +3,6 @@ from dash import html, dcc, callback, Input, Output
 import plotly.express as px
 import pickle
 
-var = 4
-
 dash.register_page(__name__)
 
 with open("reddit_comp.pkl", "rb") as file_handle:
