@@ -11,6 +11,7 @@ page_names = {
     "Qrg": "Python Quick Reference Guides",
     "Overlaps": "Reddit Common Interest Comparison",
     "Contactme": "Contact Me",
+    "Voicetocloud": "Audio to WordCloud",
 }
 
 sidebar = html.Div(
