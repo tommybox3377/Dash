@@ -5,14 +5,12 @@ import plotly.graph_objects as go
 import pandas as pd
 
 dash.register_page(__name__)
-df = pd.read_pickle(r"openings_df.pkl")
-labels = df['m1'].unique().to_list() + df['m2'].unique().to_list()
-print(sum(df.memory_usage()) / 1000 / 1000)
-labels.append("NoneNone")
+
+labels = ['e2e4', 'd2d4', 'b2b3', 'c2c4', 'e2e3', 'b1c3', 'g1f3', 'd2d3', 'g2g3', 'f2f3', 'f2f4', 'c2c3', 'b2b4', 'a2a4', 'h2h4', 'g2g4', 'a2a3', 'h2h3', 'g1h3', 'b1a3', 'e7e6', 'd7d5', 'e7e5', 'c7c6', 'b7b6', 'c7c5', 'g7g6', 'g8f6', 'd7d6', 'b8c6', 'f7f6', 'a7a6', 'h7h6', 'g7g5', 'f7f5', 'a7a5', 'b7b5', 'g8h6', 'h7h5', 'b8a6', 'NoneNone']
 elo_mean_min_max = [800, 2700]
 game_len_min_max = [10, 220]
 elo_dif_min_max = [0, 1000]
-tot_count = len(df)
+tot_count = 14903950
 
 layout = html.Div(
     style={
@@ -111,7 +109,7 @@ layout = html.Div(
     ]
 )
 def update_graph(min_per, mean_elo, g_type, g_mode, g_results, game_len, elo_diff, elo_adv):
-    these = df
+    these = pd.read_pickle(r"openings_df.pkl")
     if mean_elo != elo_mean_min_max:
         these = these[((these["WElo"] + these["BElo"]) / 2).between(mean_elo[0], mean_elo[1])]
     if game_len != game_len_min_max:
@@ -119,13 +117,11 @@ def update_graph(min_per, mean_elo, g_type, g_mode, g_results, game_len, elo_dif
     if elo_diff != elo_dif_min_max:
         these = these[abs(these["WElo"] - these["BElo"]).between(elo_diff[0], elo_diff[1])]
 
-    match elo_adv:
-        case "White":
+    if elo_adv == "White":
             these = these[these["WElo"] > these["BElo"]]
-        case "Black":
+    elif elo_adv == "Black":
             these = these[these["WElo"] < these["BElo"]]
-        case "Either":
-            pass
+
 
     if len(g_type) < 3:
         these = these[these["type_game"].isin(g_type)]
