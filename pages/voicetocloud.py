@@ -267,11 +267,11 @@ def update_output(audio_file, incoming_name):
 
             fname = str(uuid4())
 
-            with open(f"{fname}.mp3", "wb") as file:
+            with open(f"WIP/{fname}.mp3", "wb") as file:
                 file.write(decoded)
 
             print("Trigger!")
-            text = audio_to_text(f"{fname}.mp3")
+            text = audio_to_text(f"WIP/{fname}.mp3")
             print("clouding!")
             make_wordcloud(text, fname)
             return text, f'assets/cloudfiles/{fname}.png'
