@@ -253,8 +253,9 @@ layout = html.Div(
 )
 def update_output(audio_file, incoming_name):
     if audio_file:
-        if incoming_name.split(".")[-1] not in ["mp3", "m4a"]:
-            return ".mp3 files only, Sorry!", f'assets/typeerror.png'
+        f_type = incoming_name.split(".")[-1]
+        if f_type not in ["mp3", "m4a"]:
+            return "mp3 and m4a files only, Sorry!", f'assets/typeerror.png'
         try:
             print(incoming_name)
             content_type, content_string = audio_file.split(',')
@@ -267,15 +268,15 @@ def update_output(audio_file, incoming_name):
 
             fname = str(uuid4())
 
-            with open(f"WIP/{fname}.mp3", "wb") as file:
+            with open(f"WIP/{fname}.{f_type}", "wb") as file:
                 file.write(decoded)
 
             print("Trigger!")
             # text = audio_to_text(f"WIP/{fname}.mp3")
             print("I am here!")
             model = whisper.load_model("tiny.en")
-            results = model.transcribe(f"WIP/{fname}.mp3")["text"]
-            os.remove(f"WIP/{fname}.mp3")
+            results = model.transcribe(f"WIP/{fname}.{f_type}")["text"]
+            os.remove(f"WIP/{fname}.{f_type}")
             text= results
 
             print("clouding!")
