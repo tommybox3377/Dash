@@ -242,7 +242,7 @@ def make_wordcloud(all_words, fname):
                     contour_color='black',
                     stopwords=stop_words)
     wc.generate(all_words)
-    wc.to_file(f'WIP/{fname}.png')
+    wc.to_file(f'assets/cloudfiles/{fname}.png')
 
 
 @callback(
@@ -274,7 +274,7 @@ def update_output(audio_file, incoming_name):
             text = audio_to_text(f"WIP/{fname}.mp3")
             print("clouding!")
             make_wordcloud(text, fname)
-            return text, f'WIP/{fname}.png'
+            return text, f'assets/cloudfiles/{fname}.png'
         except Exception as ex:
             print(ex)
             return "Something went wrong, sorry!", f'assets/error.png'
