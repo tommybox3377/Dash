@@ -225,24 +225,24 @@ layout = html.Div(
     ])
 
 
-def audio_to_text(fname):
-    print("I am here!")
-    model = whisper.load_model("tiny.en")
-    results = model.transcribe(fname)["text"]
-    os.remove(fname)
-    return results
+# def audio_to_text(fname):
+#     print("I am here!")
+#     model = whisper.load_model("tiny.en")
+#     results = model.transcribe(fname)["text"]
+#     os.remove(fname)
+#     return results
 
-def make_wordcloud(all_words, fname):
-    wc = WordCloud(background_color="rgba(255, 255, 255, 0)",
-                    mode="RGBA",
-                    collocations=False,
-                    width=500,
-                    height=300,
-                    contour_width=3,
-                    contour_color='black',
-                    stopwords=stop_words)
-    wc.generate(all_words)
-    wc.to_file(f'assets/cloudfiles/{fname}.png')
+# def make_wordcloud(all_words, fname):
+#     wc = WordCloud(background_color="rgba(255, 255, 255, 0)",
+#                     mode="RGBA",
+#                     collocations=False,
+#                     width=500,
+#                     height=300,
+#                     contour_width=3,
+#                     contour_color='black',
+#                     stopwords=stop_words)
+#     wc.generate(all_words)
+#     wc.to_file(f'assets/cloudfiles/{fname}.png')
 
 
 @callback(
@@ -271,9 +271,26 @@ def update_output(audio_file, incoming_name):
                 file.write(decoded)
 
             print("Trigger!")
-            text = audio_to_text(f"WIP/{fname}.mp3")
+            # text = audio_to_text(f"WIP/{fname}.mp3")
+            print("I am here!")
+            model = whisper.load_model("tiny.en")
+            results = model.transcribe(f"WIP/{fname}.mp3")["text"]
+            os.remove(f"WIP/{fname}.mp3")
+            text= results
+
             print("clouding!")
-            make_wordcloud(text, fname)
+            # make_wordcloud(text, fname)
+            wc = WordCloud(background_color="rgba(255, 255, 255, 0)",
+                           mode="RGBA",
+                           collocations=False,
+                           width=500,
+                           height=300,
+                           contour_width=3,
+                           contour_color='black',
+                           stopwords=stop_words)
+            wc.generate(text)
+            wc.to_file(f'assets/cloudfiles/{fname}.png')
+
             return text, f'assets/cloudfiles/{fname}.png'
         except Exception as ex:
             print(ex)
