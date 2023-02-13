@@ -275,7 +275,8 @@ def update_output(audio_file, incoming_name):
             print("clouding!")
             make_wordcloud(text, fname)
             return text, f'assets/cloudfiles/{fname}.png'
-        except:
+        except Exception as ex:
+            print(ex)
             return "Something went wrong, sorry!", f'assets/error.png'
     else:
         return "Here will be my into! I like talking!", "assets/wordcloud.png"
